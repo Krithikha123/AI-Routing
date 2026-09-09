@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Routing Optimizer</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app">
+        <aside class="sidebar">
+            <div class="logo">
+                <h2>AI ROUTING</h2>
+                <span>OPTIMIZER</span>
+            </div>
+            <nav>
+                <button class="nav active" data-section="network">◉ <span>Network & Algorithms</span></button>
+                <button class="nav" data-section="comparison">⇄ <span>Comparison</span></button>
+                <button class="nav" data-section="analysis">◌ <span>Performance & Sensitivity</span></button>
+            </nav>
+        </aside>
+
+        <main class="main">
+            <header>
+                <h1>AI-INSPIRED ROUTING OPTIMIZER</h1>
+                <p>Generate cities and run AI-inspired routing algorithms</p>
+            </header>
+
+            <section class="content app-section active-section" data-section="network">
+                <h2>Network & Algorithms</h2>
+                <p class="subtitle">Generate the routing network and optimize it using AI-inspired algorithms.</p>
+                <div class="network-grid">
+                    <div class="left-column">
+                        <div class="card">
+                            <h3>Network Configuration</h3>
+                            <p class="small">Create cities for the routing problem.</p>
+                            <div class="city-input">
+                                <div>
+                                    <label>Number of Cities</label>
+                                    <input type="number" id="cityCount" value="5" min="2" max="40">
+                                </div>
+
+                                <button onclick="generateCities()">Generate<br>Cities</button>
+                            </div>
+                        </div>
+
+                        <div class="card algorithm-card">
+                            <h3>Algorithm Configuration</h3>
+                            <p class="small">Select an algorithm and run optimization.</p>
+
+                            <label>Select Algorithm</label>
+
+                            <select id="algorithm">
+                                <option>Genetic Algorithm</option>
+                                <option>Simulated Annealing</option>
+                                <option>Ant Colony Optimization</option>
+                                <option>Particle Swarm Optimization</option>
+                                <option>Artificial Bee Colony</option>
+                            </select>
+
+                            <button class="run-btn" onclick="runAlgorithm()">Run Algorithm</button>
+
+                            <div class="result">
+                                <div>
+                                    <span>Distance</span>
+                                    <strong id="distance">-</strong>
+                                </div>
+                            </div>
+
+                            <div class="route-box" id="route">
+                                Route will appear here
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card generated-cities">
+                        <h3>Generated Cities</h3>
+                        <p class="small">Coordinates of the generated cities.</p>
+
+                        <div id="cityList" class="city-list">
+                            <div class="empty-city">
+                                Generate cities to display coordinates.
+                            </div>
+                        </div>
+
+                        <div class="source-info">
+                            <span>SOURCE</span>
+                            <strong>19.0760, 72.8777</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DISTANCE MATRIX ADDED HERE -->
+
+                <div class="card matrix-card">
+                    <h3>Distance Matrix</h3>
+                    <p class="small">Distance between every pair of locations.</p>
+
+                    <div class="matrix-container">
+                        <table id="distanceMatrix">
+                            <tbody>
+                                <tr>
+                                    <td class="empty-matrix">
+                                        Generate cities to display the distance matrix.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="card visualization">
+                    <h3>Network Visualization</h3>
+                    <p class="small">City locations and current optimized route.</p>
+                    <canvas id="network"></canvas>
+                </div>
+            </section>
+
+            <section class="content app-section" data-section="comparison" hidden>
+                <h2>Algorithm Comparison</h2>
+                <p class="subtitle">Compare route distance, execution time and convergence across all algorithms.</p>
+
+                <button class="action-btn" onclick="compareAlgorithms()">Run Comparison</button>
+
+                <div class="card table-card">
+                    <table id="comparisonTable">
+                        <thead>
+                            <tr>
+                                <th>Algorithm</th>
+                                <th>Distance (km)</th>
+                                <th>Execution Time (sec)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="3">Generate cities, then run comparison.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p id="comparisonConclusion" class="result-text"></p>
+                </div>
+
+                <div class="comparison-charts">
+                    <div class="card chart-card">
+                        <h3>Distance Comparison</h3>
+                        <p class="small">Comparison of route distance produced by each algorithm.</p>
+
+                        <div class="chart-container">
+                            <canvas id="distanceChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card chart-card">
+                        <h3>Execution Time Comparison</h3>
+                        <p class="small">Comparison of execution time for each algorithm.</p>
+
+                        <div class="chart-container">
+                            <canvas id="executionChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card chart-card convergence-card">
+                        <h3>Convergence Graph</h3>
+                        <p class="small">Best distance obtained at each iteration.</p>
+
+                        <div class="chart-container">
+                            <canvas id="convergenceChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content app-section" data-section="analysis" hidden>
+                <h2>Performance & Sensitivity</h2>
+                <p class="subtitle">Analyze algorithm performance and study the effect of algorithm parameters.</p>
+
+                <div class="analysis-section">
+                    <h3>Performance Analysis</h3>
+                    <p class="small">Measure average, best, worst, and variance over repeated runs.</p>
+
+                    <div class="performance-controls">
+                        <label>
+                            Number of Runs
+                            <input id="runs" type="number" value="3" min="2" max="20">
+                        </label>
+
+                        <button class="action-btn" onclick="runStatistics()">Run Analysis</button>
+                    </div>
+
+                    <div class="card table-card">
+                        <h3>Performance Results</h3>
+
+                        <table id="statisticsTable">
+                            <thead>
+                                <tr>
+                                    <th>Algorithm</th>
+                                    <th>Average Distance</th>
+                                    <th>Best Distance</th>
+                                    <th>Worst Distance</th>
+                                    <th>Variance</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td colspan="5">Generate cities, then run analysis.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="analysis-section">
+                    <h3>Parameter Sensitivity</h3>
+                    <p class="small">Study how algorithm parameters influence solution quality.</p>
+
+                    <div class="sensitivity-controls">
+                        <div>
+                            <label>Algorithm</label>
+                            <select id="sensitivityAlgorithm">
+                                <option value="Genetic Algorithm">Genetic Algorithm</option>
+                                <option value="Simulated Annealing">Simulated Annealing</option>
+                                <option value="Ant Colony Optimization">Ant Colony Optimization</option>
+                                <option value="Particle Swarm Optimization">Particle Swarm Optimization</option>
+                                <option value="Artificial Bee Colony">Artificial Bee Colony</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label>Parameter</label>
+                            <select id="sensitivityParameterSelect"></select>
+                        </div>
+
+                        <div>
+                            <label>Parameter Values</label>
+                            <input
+                                type="text"
+                                id="sensitivityValues"
+                                value="20,40,60,80,100"
+                            >
+                        </div>
+
+                        <button class="action-btn" onclick="runSensitivity()">
+                            Run Sensitivity Analysis
+                        </button>
+                    </div>
+
+                    <div class="card sensitivity-graph-card">
+                        <h3>Sensitivity Graph</h3>
+
+                        <div class="sensitivity-chart-container">
+                            <canvas id="sensitivityChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="card table-card">
+                        <h3>Sensitivity Results</h3>
+
+                        <table id="sensitivityTable">
+                            <thead>
+                                <tr>
+                                    <th>Parameter Value</th>
+                                    <th>Distance</th>
+                                    <th>Execution Time</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td colspan="3">
+                                        Generate cities, then run sensitivity analysis.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
